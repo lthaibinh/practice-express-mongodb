@@ -6,6 +6,13 @@ router
   .route('/')
   .get(tourController.getAllTours)
   // .post()
+router
+  .route('/tour-stats')
+  .get(tourController.getTourStats)
+
+router
+  .route('/monthly-plan')
+  .get(tourController.getMonthlyPlan)
 
 router
   .route('/:id')

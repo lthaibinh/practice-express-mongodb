@@ -3,9 +3,10 @@ const mongoose = require('mongoose')
 const tourSchema = new mongoose.Schema({
   _id: {
     type: String,
-    unique: true,
+    unique: false,
     select: false
   },
+  slug: String,
   name: {
     type: String,
     required: [true, 'a tour must have a name'],
@@ -37,6 +38,22 @@ const tourSchema = new mongoose.Schema({
     default: Date.now()
   }
 
+},{
+  toJSON: {virtuals: true},
+  toObject: {virtuals: true}
+})
+tourSchema.virtual('durationWeeks').get( function(){
+  return this.duration / 7
+})
+
+tourSchema.pre('save', function(next){
+  console.log('presave doc');
+  next();
+})
+
+tourSchema.post('save', function(doc, next){
+  console.log('save doc',doc);
+  next();
 })
 
 const Tour = mongoose.model('Tour', tourSchema)
