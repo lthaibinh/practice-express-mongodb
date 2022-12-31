@@ -17,6 +17,13 @@ const connection = mongoose.connect(databaseInfo).then(con => {
 
 const port = process.env.PORT || 1111
 
+app.all('*', (req, res, next) => {
+  res.status(404).json({
+    status: 'fail',
+    message: 'cant find ${req.originalUrl} on this server'
+  })
+})
+
 app.use('/api/v1/tours', tourRouter)
 
 

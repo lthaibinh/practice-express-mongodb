@@ -2,6 +2,30 @@
 const Tour = require('../models/tourModel')
 const APIFeatures = require('./../utils/APIFeatures')
 
+exports.getTour = async (req, res) => {
+  try{
+    let {idTour} = req.params
+    const features = new APIFeatures(Tour.findById(idTour), req.query);
+    const tours = await features.query;
+
+    res.status(200).json({
+      status: 'success',
+      requestAt: req.requestTime,
+      // results: tours.length,
+      data: {
+        tours
+      }
+    })
+
+  }catch(err){
+    console.log(err);
+    res.status(400).json({
+      status: 'fail',
+      message: err
+    })
+  }
+}
+
 exports.getAllTours = async (req, res) => {
   try{
     console.log(req.query);
@@ -37,23 +61,6 @@ exports.getAllTours = async (req, res) => {
   }
 }
 
-exports.getAllTours1 = (req, res) => {
-  res.status(200).json({
-    status: 'success binhtest',
-    requestAt: req.requestTime,
-    results: 'result binhtest',
-    data: {
-      tours: [
-        {
-          name: 'test1 binhtest'
-        },
-        {
-          name: 'test2 binhtest'
-        }
-      ]
-    }
-  })
-}
 
 exports.getTourStats = async ( req, res) => {
   try {
